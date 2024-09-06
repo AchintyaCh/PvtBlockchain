@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockchain App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .response {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to the Blockchain App</h1>
+        <button onclick="location.href='/chain'">View Blockchain</button>
+        <br>
+        <button onclick="mineBlock()">Mine New Block</button>
+        <div class="response" id="response"></div>
+    </div>
+    <script>
+        function mineBlock() {
+            fetch('/mine', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ data: 'New block data' })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('response').innerText = 'Block mined successfully:\n' +
+                    JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                document.getElementById('response').innerText = 'Error mining block: ' + error;
+            });
+        }
+    </script>
+</body>
+</html>
