@@ -25,18 +25,43 @@
         }
         .response {
             margin-top: 20px;
+            white-space: pre-wrap; /* Preserve line breaks */
+            text-align: left;
+            width: 80%;
+            max-width: 600px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 8px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Welcome to the Blockchain App</h1>
-        <button onclick="location.href='/chain'">View Blockchain</button>
+        <button onclick="viewBlockchain()">View Blockchain</button>
         <br>
         <button onclick="mineBlock()">Mine New Block</button>
         <div class="response" id="response"></div>
     </div>
+
     <script>
+        // Function to fetch and display the blockchain
+        function viewBlockchain() {
+            fetch('/chain', {
+                method: 'GET',
+            })
+            .then(response => response.json())
+            .then(data => {
+                const responseDiv = document.getElementById('response');
+                responseDiv.innerText = 'Blockchain:\n' + JSON.stringify(data.chain, null, 2);
+            })
+            .catch(error => {
+                document.getElementById('response').innerText = 'Error fetching blockchain: ' + error;
+            });
+        }
+
+        // Function to mine a new block and display the result
         function mineBlock() {
             fetch('/mine', {
                 method: 'POST',
@@ -47,8 +72,8 @@
             })
             .then(response => response.json())
             .then(data => {
-                document.getElementById('response').innerText = 'Block mined successfully:\n' +
-                    JSON.stringify(data, null, 2);
+                const responseDiv = document.getElementById('response');
+                responseDiv.innerText = 'Block mined successfully:\n' + JSON.stringify(data, null, 2);
             })
             .catch(error => {
                 document.getElementById('response').innerText = 'Error mining block: ' + error;
