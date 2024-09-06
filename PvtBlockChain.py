@@ -1,7 +1,12 @@
 import hashlib
 import time
 import json
+import os
 from flask import Flask, jsonify, request, render_template
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Block Class to define the structure of a single block
 class Block:
@@ -101,9 +106,9 @@ def mine_block():
         'data': new_block.data,
         'timestamp': new_block.timestamp
     }), 201
-    
+
 # Run the Flask app
 if __name__ == '__main__':
     # Get the port from the environment variable or default to 5000
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+    port = int(os.getenv('PORT', 5000))
+    app.run(port=port)
