@@ -25,55 +25,45 @@
         }
         .response {
             margin-top: 20px;
-            white-space: pre-wrap; /* Preserve line breaks */
-            text-align: left;
-            width: 80%;
-            max-width: 600px;
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
+        }
+        input {
             padding: 10px;
-            border-radius: 8px;
+            font-size: 16px;
+            width: 300px;
+            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Welcome to the Blockchain App</h1>
-        <button onclick="viewBlockchain()">View Blockchain</button>
+        <button onclick="location.href='/chain'">View Blockchain</button>
+        <br>
+        <input type="text" id="blockData" placeholder="Enter data for the new block">
         <br>
         <button onclick="mineBlock()">Mine New Block</button>
         <div class="response" id="response"></div>
     </div>
 
     <script>
-        // Function to fetch and display the blockchain
-        function viewBlockchain() {
-            fetch('/chain', {
-                method: 'GET',
-            })
-            .then(response => response.json())
-            .then(data => {
-                const responseDiv = document.getElementById('response');
-                responseDiv.innerText = 'Blockchain:\n' + JSON.stringify(data.chain, null, 2);
-            })
-            .catch(error => {
-                document.getElementById('response').innerText = 'Error fetching blockchain: ' + error;
-            });
-        }
-
-        // Function to mine a new block and display the result
         function mineBlock() {
+            const data = document.getElementById('blockData').value;
+            if (!data) {
+                document.getElementById('response').innerText = 'Please enter data for the new block.';
+                return;
+            }
+
             fetch('/mine', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ data: 'New block data' })
+                body: JSON.stringify({ data: data })
             })
             .then(response => response.json())
             .then(data => {
-                const responseDiv = document.getElementById('response');
-                responseDiv.innerText = 'Block mined successfully:\n' + JSON.stringify(data, null, 2);
+                document.getElementById('response').innerText = 'Block mined successfully:\n' +
+                    JSON.stringify(data, null, 2);
             })
             .catch(error => {
                 document.getElementById('response').innerText = 'Error mining block: ' + error;
