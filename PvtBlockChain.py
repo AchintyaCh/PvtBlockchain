@@ -4,7 +4,6 @@ import json
 import os
 from flask import Flask, jsonify, request, render_template
 
-
 # Block Class to define the structure of a single block
 class Block:
     def __init__(self, index, previous_hash, data, timestamp):
@@ -107,4 +106,5 @@ def mine_block():
 # Run the Flask app
 if __name__ == '__main__':
     # Get the port from the environment variable or default to 5000
-    app.run(5000)
+    port = int(os.getenv('PORT', 5000))
+    app.run(port=port)
