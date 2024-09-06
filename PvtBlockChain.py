@@ -1,8 +1,7 @@
 import hashlib
 import time
 import json
-import os
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 
 # Block Class to define the structure of a single block
 class Block:
@@ -59,6 +58,11 @@ app = Flask(__name__)
 # Initialize a blockchain
 blockchain = Blockchain()
 
+# Serve the landing page
+@app.route('/')
+def home():
+    return render_template('index.html')
+
 # Get the full blockchain
 @app.route('/chain', methods=['GET'])
 def get_chain():
@@ -97,7 +101,7 @@ def mine_block():
         'data': new_block.data,
         'timestamp': new_block.timestamp
     }), 201
-
+    
 # Run the Flask app
 if __name__ == '__main__':
     # Get the port from the environment variable or default to 5000
